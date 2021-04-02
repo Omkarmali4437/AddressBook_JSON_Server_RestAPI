@@ -18,7 +18,7 @@ public class AddressBookJSONTest {
         RestAssured.port=4000;
     }
 
-    public AddressBookData[] getEmplist(){
+    public AddressBookData[] getContactlist(){
         Response response=RestAssured.get("/contacts");
         System.out.println("Data in json is: \n"+response.asString());
         AddressBookData[] restAssureBookData=new Gson().fromJson(response.asString(),AddressBookData[].class);
@@ -35,14 +35,14 @@ public class AddressBookJSONTest {
 
     @Test
     public void givenContactData_shouldRetrieve_ServerData(){
-        AddressBookData[] restAssureBookData=getEmplist();
+        AddressBookData[] restAssureBookData=getContactlist();
         System.out.println(restAssureBookData);
-        Assert.assertEquals(5,restAssureBookData.length);
+        Assert.assertEquals(4,restAssureBookData.length);
     }
 
     @Test
     public void whenNewContact_isAdded_Sholdreturn201ResponseCode(){
-        AddressBookData[] jsonServerBookData=getEmplist();
+        AddressBookData[] jsonServerBookData=getContactlist();
 
         AddressBookData jsonServerBookData1=new AddressBookData("5","Manish","Deva","Parampur","Malshes","Bihar","40091191","998292981","manish@gmail.com","2018-05-16");
         Response response=addContactToJsonServer(jsonServerBookData1);
@@ -53,7 +53,7 @@ public class AddressBookJSONTest {
 
     @Test
     public void givenNewData_Should_Retun200ResponseCode() throws SQLException {
-        AddressBookData[] serverEmpData=getEmplist();
+        AddressBookData[] serverEmpData=getContactlist();
 
         RequestSpecification requestSpecification=RestAssured.given();
         requestSpecification.header("Content-Type","application/json");
@@ -64,5 +64,17 @@ public class AddressBookJSONTest {
         Assert.assertEquals(200,statusCode);
     }
 
+    @Test
+    public void givenDelete_Command_ShouldRetun200ResponseCode() throws SQLException {
+        AddressBookData[] serverBookData=getContactlist();
+        String empJson=new Gson().toJson(serverBookData);
 
+        RequestSpecification requestSpecification=RestAssured.given();
+        requestSpecification.header("Content-Type","application/json");
+        requestSpecification.body(empJson);
+        Response response=requestSpecification.delete("/contacts/delete/5");
+
+        int statusCode=response.getStatusCode();
+        Assert.assertEquals(200,statusCode);
+    }
 }
