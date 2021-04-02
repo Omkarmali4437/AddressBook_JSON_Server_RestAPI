@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.SQLException;
+
 public class AddressBookJSONTest {
 
     @Before
@@ -48,5 +50,19 @@ public class AddressBookJSONTest {
 
         Assert.assertEquals(201,statusCode);
     }
+
+    @Test
+    public void givenNewData_Should_Retun200ResponseCode() throws SQLException {
+        AddressBookData[] serverEmpData=getEmplist();
+
+        RequestSpecification requestSpecification=RestAssured.given();
+        requestSpecification.header("Content-Type","application/json");
+        requestSpecification.body("{\"firstname\":\"Manasi\",\"lastname\":\"Patil\",\"address\":\"Bagha\",\"city\":\"South\",\"state\":\"Goa\",\"zip\":\"400919\",\"phonenumber\":\"88726616\",\"email\":\"manasi@gmail.com\",\"date\":\"2019-03-07\"}");
+        Response response=requestSpecification.put("/contacts/update/2");
+
+        int statusCode=response.getStatusCode();
+        Assert.assertEquals(200,statusCode);
+    }
+
 
 }
