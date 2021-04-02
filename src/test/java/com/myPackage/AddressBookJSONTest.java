@@ -23,7 +23,7 @@ public class AddressBookJSONTest {
         return restAssureBookData;
     }
 
-    public Response addEmployeeToJsonServer(AddressBookData restAssureBookData){
+    public Response addContactToJsonServer(AddressBookData restAssureBookData){
         String contac=new Gson().toJson(restAssureBookData);
         RequestSpecification requestSpecification=RestAssured.given();
         requestSpecification.header("Content-Type","application/json");
@@ -32,9 +32,21 @@ public class AddressBookJSONTest {
     }
 
     @Test
-    public void givenEmployeeDate_shouldRetrieve_ServerData(){
+    public void givenContactData_shouldRetrieve_ServerData(){
         AddressBookData[] restAssureBookData=getEmplist();
         System.out.println(restAssureBookData);
-        Assert.assertEquals(4,restAssureBookData.length);
+        Assert.assertEquals(5,restAssureBookData.length);
     }
+
+    @Test
+    public void whenNewContact_isAdded_Sholdreturn201ResponseCode(){
+        AddressBookData[] jsonServerBookData=getEmplist();
+
+        AddressBookData jsonServerBookData1=new AddressBookData("5","Manish","Deva","Parampur","Malshes","Bihar","40091191","998292981","manish@gmail.com","2018-05-16");
+        Response response=addContactToJsonServer(jsonServerBookData1);
+        int statusCode= response.statusCode();
+
+        Assert.assertEquals(201,statusCode);
+    }
+
 }
