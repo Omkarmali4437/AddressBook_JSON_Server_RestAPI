@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
+    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.36'
+    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.3.3'
+    compile "com.google.code.gson:gson:2.2+"
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+}
